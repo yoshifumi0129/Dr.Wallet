@@ -1,0 +1,43 @@
+﻿@page
+@model LoginModel
+
+
+@{
+    ViewData["Title"] = "新規登録";
+}
+
+<div class="text-center">
+    <h1>@ViewData["Title"]</h1>
+    <p class="h5 my-3">ユーザーログイン</p>
+    <div>
+        <section>
+            <form id="account" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                <div class="mb-3">
+                    <label asp-for="Input.Email" class="form-label">ID(メールアドレス)</label>
+                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Input.Password" class="form-label">パスワード</label>
+                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+                <div class="checkbox mb-3">
+                    <label asp-for="Input.RememberMe" class="form-label">
+                        <input class="form-check-input" asp-for="Input.RememberMe" />
+                        ログイン状態を維持する
+                    </label>
+                </div>
+                <div>
+                    <button id="login-submit" type="submit" class="w-50 btn btn-lg btn-primary">ログイン</button>
+                </div>
+                <br />
+                <a href="Identity/Account/Register">初めての方はこちら（新規登録ページへ遷移します）</a>
+            </form>
+        </section>
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

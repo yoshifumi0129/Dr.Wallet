@@ -1,0 +1,61 @@
+﻿@page "/summary"
+@using Dr_WalletC.Data;
+@using Dr_WalletC.Models
+@using Microsoft.EntityFrameworkCore;
+@inject ApplicationDbContext _context
+
+<PageTitle>Counter</PageTitle>
+<h1>ダッシュボードテンプレートです</h1>
+
+<SfDashboardLayout Columns="6"  AllowResizing=true>
+    <DashboardLayoutPanels >
+        <DashboardLayoutPanel Column="0" Row="0" SizeX="2" SizeY="1">
+            <HeaderTemplate>収入</HeaderTemplate>
+            <ContentTemplate>
+                Content of Panel2
+            </ContentTemplate>
+        </DashboardLayoutPanel>
+        <DashboardLayoutPanel Column="3" Row="0" SizeX="4" SizeY="1">
+            <HeaderTemplate>アドバイス</HeaderTemplate>
+            <ContentTemplate>
+                Content of Panel2
+            </ContentTemplate>
+        </DashboardLayoutPanel>
+        <DashboardLayoutPanel Column="0" Row="2" SizeX="4" SizeY="3">
+            <HeaderTemplate>支出の割合</HeaderTemplate>
+            <ContentTemplate>
+                <Chart/>
+            </ContentTemplate>
+        </DashboardLayoutPanel>
+    </DashboardLayoutPanels>
+</SfDashboardLayout>
+
+<style>
+    .e-panel-header{
+        text-align:center
+    }
+    .e-panel-content{
+        text-align:center;
+        margin-top:10px;
+    }
+</style>
+
+@* @foreach (var item in balance)
+{
+    
+    IncomeSUM += @item.Price;
+}
+ *@
+@code{
+    public IList<Balance> balance { get; set; }
+    public int IncomeSUM{ get; set; }
+
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     IQueryable<Balance> result = _context.Balance.FromSqlRaw("SELECT \"Price\" FROM \"Balances\" WHERE \"Bop\"='支出';");
+    //     balance = await result.ToListAsync();
+    // }
+
+}
+
+

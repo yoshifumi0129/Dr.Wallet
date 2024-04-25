@@ -1,0 +1,18 @@
+﻿@inject IJSRuntime JSRuntime
+
+<canvas id="mycanvas" onmousemove="pieChartTest(@red,@blue,@yellow,@green,@purple,@orange)"></canvas>
+<div class="chart-container" style="position: relative; height:400px; width:600px">
+    <canvas id="myChart"></canvas>
+</div>
+
+
+@code
+{
+    private int red = 15; 
+    private int blue = 10;
+    private int yellow = 12;
+    private int green = 10;
+    private int purple = 8;
+    private int orange = 20;
+
+}

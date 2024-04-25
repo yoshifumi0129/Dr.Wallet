@@ -1,0 +1,88 @@
+﻿@page "/bopform"
+@using Microsoft.AspNetCore.Components.Authorization
+@inject AuthenticationStateProvider AuthStateProvider
+@inject NavigationManager NavManager
+@using Microsoft.EntityFrameworkCore
+@using Dr_WalletC.Data
+@using Dr_WalletC.Models
+@inject ApplicationDbContext _context
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> UserManager
+@using System.Security.Claims
+
+<div class="text-center">
+    <h1>プロフィール設定</h1>
+
+    <EditForm Model="@balance" OnSubmit="OnAdd">
+        <div class="text-danger">@errorMessage</div>
+       @*  <div class="form-group">
+            <label asp-for="Balance.BalanceId" class="control-label">ID</label>
+            <input asp-for="Balance.BalanceId" class="form-control" @bind-value="@balance.BalanceId" />
+        </div> *@
+        <div class="form-group">
+            <label asp-for="Balance.CategoryId" class="control-label">カテゴリ</label>
+            <input asp-for="Balance.CategoryId" class="form-control" @bind-value="@balance.CategoryId" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Balance.Bop" class="control-label">収支</label>
+            <input asp-for="Balance.Bop" class="form-control" @bind-value="@balance.Bop" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Balance.Price" class="control-label">金額</label>
+            <input asp-for="Balance.Price" class="form-control" @bind-value="@balance.Price" />
+        </div>
+       @*  <div class="form-group">
+            <label asp-for="Balance.DateTime" class="control-label">日付</label>
+            <input asp-for="Balance.DateTime" class="form-control" @bind-value="@balance.DateTime" />
+        </div> *@
+        <div class="form-group">
+            <button class="btn btn-primary">登録</button>
+        </div>
+    </EditForm>
+</div>
+
+<h1>Hello, world!</h1>
+<h5>ログインユーザID: @userId</h5>
+<h5>ログインユーザ名: @loginName</h5>
+<h5>@nowDt </h5>
+@code {
+    private string loginName = "";
+    private Balance balance = new Balance();
+    private string errorMessage = "";
+    private string userId;
+    private DateTime nowDt = DateTime.Now;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // AuthenticationStateProviderから現在の認証状態を取得
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var authuser = authState.User;
+        // ユーザーが認証済みの場合は、Identity.Nameからログイン名を取得して返す
+        if (authuser.Identity.IsAuthenticated)
+        {
+            // ログイン名取得
+            loginName = authuser.Identity.Name;
+            // ログインID取得
+            userId = authuser.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            balance.UserAccountId = userId;
+            var obj = DateTime.SpecifyKind(nowDt, DateTimeKind.Utc);
+            balance.DateTime = obj;
+        }
+    }
+
+    private void OnAdd()
+    {
+        errorMessage = "add person...";
+        try
+        {
+            _context.Add(balance);
+            _context.SaveChanges();
+         
+        }
+        catch (Exception e)
+        {
+            errorMessage = e.Message + "の問題が起こりました。";
+        }
+    }
+  
+}
