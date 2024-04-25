@@ -3,14 +3,15 @@
 @using Dr_WalletC.Models
 @using Microsoft.EntityFrameworkCore;
 @inject ApplicationDbContext _context
+@inject IJSRuntime JSRuntime
 
 <PageTitle>Counter</PageTitle>
-<h1>ダッシュボードテンプレートです</h1>
+@* <h1>ダッシュボードテンプレートです</h1> *@
 
-<SfDashboardLayout Columns="6"  AllowResizing=true>
-    <DashboardLayoutPanels >
+<SfDashboardLayout Columns="6" AllowResizing=true>
+    <DashboardLayoutPanels>
         <DashboardLayoutPanel Column="0" Row="0" SizeX="2" SizeY="1">
-            <HeaderTemplate>収入</HeaderTemplate>
+            <HeaderTemplate>レベル</HeaderTemplate>
             <ContentTemplate>
                 Content of Panel2
             </ContentTemplate>
@@ -18,13 +19,16 @@
         <DashboardLayoutPanel Column="3" Row="0" SizeX="4" SizeY="1">
             <HeaderTemplate>アドバイス</HeaderTemplate>
             <ContentTemplate>
-                Content of Panel2
+                <h3>今月の支出率　@ExpenditureRate</h3>
             </ContentTemplate>
         </DashboardLayoutPanel>
         <DashboardLayoutPanel Column="0" Row="2" SizeX="4" SizeY="3">
             <HeaderTemplate>支出の割合</HeaderTemplate>
             <ContentTemplate>
-                <Chart/>
+                <button class="btn btn-primary btn-sm py-0" onclick="renderChartTest(@Food1,@Hobby2,@Carfare3,@Clothes4,@Expenses5,@Education6)">Click me</button>
+                <div class="chart-container" style="position: relative; height:400px; width:600px ">
+                    <canvas id="myChart" style="text-align:center"></canvas>
+                </div>
             </ContentTemplate>
         </DashboardLayoutPanel>
     </DashboardLayoutPanels>
@@ -39,22 +43,94 @@
         margin-top:10px;
     }
 </style>
-
-@* @foreach (var item in balance)
+@foreach (var items in Expense)
 {
-    
-    IncomeSUM += @item.Price;
+    SumExpense += items.Price;
 }
- *@
+@foreach (var items in Income)
+{
+    SumIncome += items.Price;
+}
+@foreach (var items in Food)
+{
+    Food1 += items.Price;
+}
+@foreach (var items in Hobby)
+{
+    Hobby2 += items.Price;
+}
+@foreach (var items in Carfare)
+{
+    Carfare3 += items.Price;
+}
+@foreach (var items in Clothes)
+{
+    Clothes4 += items.Price;
+}
+@foreach (var items in Expenses)
+{
+    Expenses5 += items.Price;
+}
+@foreach (var items in Education)
+{
+    Education6 += items.Price;
+}
+@{
+    ExpenditureRate = SumExpense / (SumIncome*0.8);
+}
+
 @code{
     public IList<Balance> balance { get; set; }
-    public int IncomeSUM{ get; set; }
+    public IList<Balance> Expense { get; set; }
+    public IList<Balance> Income { get; set; }
+    public IList<Balance> Food { get; set; }
+    public IList<Balance> Hobby { get; set; }
+    public IList<Balance> Carfare { get; set; }
+    public IList<Balance> Clothes { get; set; }
+    public IList<Balance> Expenses { get; set; }
+    public IList<Balance> Education { get; set; }
 
-    // protected override async Task OnInitializedAsync()
-    // {
-    //     IQueryable<Balance> result = _context.Balance.FromSqlRaw("SELECT \"Price\" FROM \"Balances\" WHERE \"Bop\"='支出';");
-    //     balance = await result.ToListAsync();
-    // }
+    public double ExpenditureRate{ get; set;}
+    public int SumExpense { get; set; }
+    public int SumIncome { get; set; }
+    public int Food1 { get; set; }
+    public int Hobby2 { get; set; }
+    public int Carfare3 { get; set; }
+    private int Clothes4 { get; set; }
+    private int Expenses5 { get; set; }
+    private int Education6 { get; set; }
+
+    
+    protected override void OnInitialized()
+    {
+        IQueryable<Balance> reslutE = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"Bop\" = '支出' AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+
+        IQueryable<Balance> reslutI = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"Bop\" = '収入' AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+
+        IQueryable<Balance> reslut1 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 1 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+
+        IQueryable<Balance> reslut2 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 2 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+
+        IQueryable<Balance> reslut3 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 3 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+
+        IQueryable<Balance> reslut4 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 4 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+
+        IQueryable<Balance> reslut5 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 5 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+
+        IQueryable<Balance> reslut6 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 6 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+
+        Food = reslut1.ToList();
+        Hobby = reslut2.ToList();
+        Carfare = reslut3.ToList();
+        Clothes = reslut4.ToList();
+        Expenses = reslut5.ToList();
+        Education = reslut6.ToList();
+
+
+        Expense = reslutE.ToList();
+        Income = reslutI.ToList();
+
+    }
 
 }
 

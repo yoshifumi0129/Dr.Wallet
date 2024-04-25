@@ -25,7 +25,7 @@ function renderChartTest(red,blue,yellow,green,purple,orange) {
         JSON.stringify({
             "type": "radar",
             "data": {
-                "labels": ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+                "labels": ["食費", "趣味・娯楽", "交通費", "衣服・美容", "特別費", "教養・教育費"],
                 "datasets": [
                     {
                         "label": "支出",
@@ -50,7 +50,7 @@ function renderChartTest(red,blue,yellow,green,purple,orange) {
                     },
                     {
                         "label": "理想",
-                        "data": [14, 14, 14, 14, 14, 14],
+                        "data": [10000, 10000, 10000, 10000, 10000, 10000],
                         "backgroundColor": [
                             "rgba(255, 99, 132, 0.2)",
                             "rgba(54, 162, 235, 0.2)",

@@ -6,32 +6,32 @@
 @inject IJSRuntime JSRuntime
 
 <PageTitle>Counter</PageTitle>
-<h1>ダッシュボードテンプレートです</h1>
+@* <h1>ダッシュボードテンプレートです</h1> *@
 
 <SfDashboardLayout Columns="6"  AllowResizing=true>
     <DashboardLayoutPanels >
         <DashboardLayoutPanel Column="0" Row="0" SizeX="2" SizeY="1">
             <HeaderTemplate>収入</HeaderTemplate>
             <ContentTemplate>
-                Content of Panel2
+                <h1>@SumIncome</h1>
             </ContentTemplate>
         </DashboardLayoutPanel>
         <DashboardLayoutPanel Column="2" Row="0" SizeX="2" SizeY="1">
             <HeaderTemplate>支出</HeaderTemplate>
             <ContentTemplate>
-                Content of Panel2
+                <h1>@SumExpense</h1>
             </ContentTemplate>
         </DashboardLayoutPanel>
         <DashboardLayoutPanel Column="4" Row="0" SizeX="2" SizeY="1">
             <HeaderTemplate>残高</HeaderTemplate>
             <ContentTemplate>
-                Content of Panel3
+               <h1>@Balance</h1>
             </ContentTemplate>
         </DashboardLayoutPanel>
         <DashboardLayoutPanel Column="0" Row="1" SizeX="3" SizeY="3">
             <HeaderTemplate>支出の割合</HeaderTemplate>
             <ContentTemplate>
-                <button class="btn btn-primary btn-sm py-0" onclick="pieChartTest(@Food,@Hobby,@Carfare,@Clothes,@Expenses,@Education)">Click me</button>
+                <button class="btn btn-primary btn-sm py-0" onclick="pieChartTest(@Food1,@Hobby2,@Carfare3,@Clothes4,@Expenses5,@Education6)">Click me</button>
                 <div class="chart-container" style="position: relative; height:400px; width:600px ">
                     <canvas id="myChart" style="text-align:center"></canvas>
                 </div>
@@ -40,11 +40,52 @@
         <DashboardLayoutPanel Column="4" Row="1" SizeX="3" SizeY="3">
             <HeaderTemplate>カテゴリー別合計</HeaderTemplate>
             <ContentTemplate>
-                Content of Panel5
+                <h1>食費 @Food1</h1>
+                <h1>趣味・娯楽 @Hobby2</h1>
+                <h1>交通費 @Carfare3</h1>
+                <h1>衣服・美容 @Clothes4</h1>
+                <h1>特別費 @Expenses5</h1>
+                <h1>教養・教育 @Education6</h1>
             </ContentTemplate>
         </DashboardLayoutPanel>
     </DashboardLayoutPanels>
 </SfDashboardLayout>
+@foreach (var items in Expense)
+{
+    SumExpense += items.Price;
+}
+@foreach (var items in Income)
+{
+    SumIncome += items.Price;
+}
+@{
+    Balance = SumIncome - SumExpense;
+}
+@foreach (var items in Food)
+{
+    Food1 += items.Price;
+}
+@foreach (var items in Hobby)
+{
+    Hobby2 += items.Price;
+}
+@foreach (var items in Carfare)
+{
+    Carfare3 += items.Price;
+}
+@foreach (var items in Clothes)
+{
+    Clothes4 += items.Price;
+}
+@foreach (var items in Expenses)
+{
+    Expenses5 += items.Price;
+}
+@foreach (var items in Education)
+{
+    Education6 += items.Price;
+}
+
 
 
 <style>
@@ -57,29 +98,60 @@
     }
 </style>
 
-@* @foreach (var item in balance)
-{
-    
-    IncomeSUM += @item.Price;
-}
- *@
 @code{
-    public IList<Balance> balance { get; set; }
+    public IList<Balance> Expense { get; set; }
+    public IList<Balance> Income { get; set; }
+    public IList<Balance> Food { get; set; }
+    public IList<Balance> Hobby { get; set; }
+    public IList<Balance> Carfare { get; set; }
+    public IList<Balance> Clothes { get; set; }
+    public IList<Balance> Expenses { get; set; }
+    public IList<Balance> Education { get; set; }
     public int IncomeSUM{ get; set; }
 
-    private int Food = 15;
-    private int Hobby = 10;
-    private int Carfare = 12;
-    private int Clothes = 10;
-    private int Expenses = 8;
-    private int Education = 20;
-    private int Water = 10;
-    // protected override async Task OnInitializedAsync()
-    // {
-    //     IQueryable<Balance> result = _context.Balance.FromSqlRaw("SELECT \"Price\" FROM \"Balances\" WHERE \"Bop\"='支出';");
-    //     balance = await result.ToListAsync();
-    // }
+    public int SumExpense { get; set; }
+    public int SumIncome { get; set; }
+    public int Balance { get; set; }
 
+    public int Food1 { get; set; }
+    public int Hobby2 { get; set; }
+    public int Carfare3 { get; set; }
+    private int Clothes4 { get; set; }
+    private int Expenses5 { get; set; }
+    private int Education6 { get; set; }
+    private int Water = 10;
+
+    protected override  void OnInitialized()
+    {
+        IQueryable<Balance> reslutE = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"Bop\" = '支出' AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+
+        IQueryable<Balance> reslutI = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"Bop\" = '収入' AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+
+        IQueryable<Balance> reslut1 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 1 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+        
+        IQueryable<Balance> reslut2 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 2 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+
+        IQueryable<Balance> reslut3 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 3 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+
+        IQueryable<Balance> reslut4 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 4 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+        
+        IQueryable<Balance> reslut5 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 5 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+        
+        IQueryable<Balance> reslut6 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 6 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+
+        Food = reslut1.ToList();
+        Hobby = reslut2.ToList();
+        Carfare = reslut3.ToList();
+        Clothes = reslut4.ToList();
+        Expenses = reslut5.ToList();
+        Education = reslut6.ToList();
+
+
+
+        Expense = reslutE.ToList();
+        Income = reslutI.ToList();
+
+    }
 }
 
 

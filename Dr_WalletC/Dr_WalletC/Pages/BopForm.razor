@@ -41,10 +41,10 @@
     </EditForm>
 </div>
 
-<h1>Hello, world!</h1>
+@* <h1>Hello, world!</h1>
 <h5>ログインユーザID: @userId</h5>
 <h5>ログインユーザ名: @loginName</h5>
-<h5>@nowDt </h5>
+<h5>@nowDt </h5> *@
 @code {
     private string loginName = "";
     private Balance balance = new Balance();
@@ -65,8 +65,9 @@
             // ログインID取得
             userId = authuser.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             balance.UserAccountId = userId;
-            var obj = DateTime.SpecifyKind(nowDt, DateTimeKind.Utc);
-            balance.DateTime = obj;
+            // var obj = DateTime.SpecifyKind(nowDt, DateTimeKind.Utc);
+            // balance.DateTime = obj;
+            balance.DateTime = nowDt.ToUniversalTime();
         }
     }
 
