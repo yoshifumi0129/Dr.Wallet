@@ -31,7 +31,7 @@
         <DashboardLayoutPanel Column="0" Row="1" SizeX="3" SizeY="3">
             <HeaderTemplate>支出の割合</HeaderTemplate>
             <ContentTemplate>
-                <button class="btn btn-primary btn-sm py-0" onclick="pieChartTest(@Food1,@Hobby2,@Carfare3,@Clothes4,@Expenses5,@Education6)">Click me</button>
+                <button class="btn btn-primary btn-sm py-0" onclick="pieChartTest(@Food1,@Hobby2,@Carfare3,@Clothes4,@Expenses5,@Education6,@Water7,@Communication8,@Rent9,@Insurance10)">Click me</button>
                 <div class="chart-container" style="position: relative; height:400px; width:600px ">
                     <canvas id="myChart" style="text-align:center"></canvas>
                 </div>
@@ -40,12 +40,16 @@
         <DashboardLayoutPanel Column="4" Row="1" SizeX="3" SizeY="3">
             <HeaderTemplate>カテゴリー別合計</HeaderTemplate>
             <ContentTemplate>
-                <h1>食費 @Food1</h1>
-                <h1>趣味・娯楽 @Hobby2</h1>
-                <h1>交通費 @Carfare3</h1>
-                <h1>衣服・美容 @Clothes4</h1>
-                <h1>特別費 @Expenses5</h1>
-                <h1>教養・教育 @Education6</h1>
+                <h2>食費 @Food1</h2>
+                <h2>趣味・娯楽 @Hobby2</h2>
+                <h2>交通費 @Carfare3</h2>
+                <h2>衣服・美容 @Clothes4</h2>
+                <h2>特別費 @Expenses5</h2>
+                <h2>教養・教育 @Education6</h2>
+                <h2>水道費 @Water7</h2>
+                <h2>通信費 @Communication8</h2>
+                <h2>家賃 @Rent9</h2>
+                <h2>税・保険 @Insurance10</h2>
             </ContentTemplate>
         </DashboardLayoutPanel>
     </DashboardLayoutPanels>
@@ -86,6 +90,23 @@
     Education6 += items.Price;
 }
 
+@foreach (var items in Water)
+{
+    Water7 += items.Price;
+}
+@foreach (var items in Communication)
+{
+    Communication8 += items.Price;
+}
+@foreach (var items in Rent)
+{
+    Rent9 += items.Price;
+}
+@foreach (var items in Insurance)
+{
+    Insurance10 += items.Price;
+}
+
 
 
 <style>
@@ -107,6 +128,12 @@
     public IList<Balance> Clothes { get; set; }
     public IList<Balance> Expenses { get; set; }
     public IList<Balance> Education { get; set; }
+    public IList<Balance> Water { get; set; }
+    public IList<Balance> Communication { get; set; }
+    public IList<Balance> Rent { get; set; }
+    public IList<Balance> Insurance { get; set; }
+
+
     public int IncomeSUM{ get; set; }
 
     public int SumExpense { get; set; }
@@ -116,10 +143,13 @@
     public int Food1 { get; set; }
     public int Hobby2 { get; set; }
     public int Carfare3 { get; set; }
-    private int Clothes4 { get; set; }
-    private int Expenses5 { get; set; }
-    private int Education6 { get; set; }
-    private int Water = 10;
+    public int Clothes4 { get; set; }
+    public int Expenses5 { get; set; }
+    public int Education6 { get; set; }
+    public int Water7{ get; set; }
+    public int Communication8{ get; set; }
+    public int Rent9 { get; set; }
+    public int Insurance10{ get; set; }
 
     protected override  void OnInitialized()
     {
@@ -139,12 +169,24 @@
         
         IQueryable<Balance> reslut6 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 6 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
 
+        IQueryable<Balance> reslut7 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 7 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+     
+        IQueryable<Balance> reslut8 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 8 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+
+        IQueryable<Balance> reslut9 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 9 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+
+        IQueryable<Balance> reslut10 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 10 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+
         Food = reslut1.ToList();
         Hobby = reslut2.ToList();
         Carfare = reslut3.ToList();
         Clothes = reslut4.ToList();
         Expenses = reslut5.ToList();
         Education = reslut6.ToList();
+        Water = reslut7.ToList();
+        Communication = reslut8.ToList();
+        Rent = reslut9.ToList();
+        Insurance = reslut10.ToList();
 
 
 

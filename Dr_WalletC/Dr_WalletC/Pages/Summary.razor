@@ -13,19 +13,19 @@
         <DashboardLayoutPanel Column="0" Row="0" SizeX="2" SizeY="1">
             <HeaderTemplate>レベル</HeaderTemplate>
             <ContentTemplate>
-                Content of Panel2
+                <h3>@Level</h3>
             </ContentTemplate>
         </DashboardLayoutPanel>
         <DashboardLayoutPanel Column="3" Row="0" SizeX="4" SizeY="1">
             <HeaderTemplate>アドバイス</HeaderTemplate>
             <ContentTemplate>
-                <h3>今月の支出率　@ExpenditureRate</h3>
+                <h3>今月の支出率　@ExpenditureRate％</h3>
             </ContentTemplate>
         </DashboardLayoutPanel>
         <DashboardLayoutPanel Column="0" Row="2" SizeX="4" SizeY="3">
             <HeaderTemplate>支出の割合</HeaderTemplate>
             <ContentTemplate>
-                <button class="btn btn-primary btn-sm py-0" onclick="renderChartTest(@Food1,@Hobby2,@Carfare3,@Clothes4,@Expenses5,@Education6)">Click me</button>
+                <button class="btn btn-primary btn-sm py-0" onclick="renderChartTest(@Food1,@Hobby2,@Carfare3,@Clothes4,@Expenses5,@Education6,@Water7,@Communication8,@Rent9,@Insurance10)">Click me</button>
                 <div class="chart-container" style="position: relative; height:400px; width:600px ">
                     <canvas id="myChart" style="text-align:center"></canvas>
                 </div>
@@ -75,8 +75,50 @@
 {
     Education6 += items.Price;
 }
+
+@foreach (var items in Water)
+{
+    Water7 += items.Price;
+}
+@foreach (var items in Communication)
+{
+    Communication8 += items.Price;
+}
+@foreach (var items in Rent)
+{
+    Rent9 += items.Price;
+}
+@foreach (var items in Insurance)
+{
+    Insurance10 += items.Price;
+}
+
 @{
-    ExpenditureRate = SumExpense / (SumIncome*0.8);
+    var Rate = (SumExpense / (SumIncome*0.8))*100;
+    ExpenditureRate = Rate.ToString("0.0");
+
+    switch (Rate)
+    {
+        case  <=70:
+            Level = "S";
+            break;
+        case  <=80:
+            Level = "A";
+            break;
+        case <= 90:
+            Level = "B";
+            break;
+        case <= 100:
+            Level = "C";
+            break;
+        case <= 200:
+            Level = "D";
+            break;
+    }
+
+
+ 
+    
 }
 
 @code{
@@ -89,16 +131,25 @@
     public IList<Balance> Clothes { get; set; }
     public IList<Balance> Expenses { get; set; }
     public IList<Balance> Education { get; set; }
+    public IList<Balance> Water { get; set; }
+    public IList<Balance> Communication { get; set; }
+    public IList<Balance> Rent { get; set; }
+    public IList<Balance> Insurance { get; set; }
 
-    public double ExpenditureRate{ get; set;}
+    public string ExpenditureRate{ get; set;}
     public int SumExpense { get; set; }
     public int SumIncome { get; set; }
     public int Food1 { get; set; }
     public int Hobby2 { get; set; }
     public int Carfare3 { get; set; }
+    public string Level { get; set; }
     private int Clothes4 { get; set; }
     private int Expenses5 { get; set; }
     private int Education6 { get; set; }
+    public int Water7 { get; set; }
+    public int Communication8 { get; set; }
+    public int Rent9 { get; set; }
+    public int Insurance10 { get; set; }
 
     
     protected override void OnInitialized()
@@ -118,6 +169,14 @@
         IQueryable<Balance> reslut5 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 5 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
 
         IQueryable<Balance> reslut6 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 6 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+       
+        IQueryable<Balance> reslut7 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 7 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+
+        IQueryable<Balance> reslut8 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 8 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+
+        IQueryable<Balance> reslut9 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 9 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+
+        IQueryable<Balance> reslut10 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 10 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
 
         Food = reslut1.ToList();
         Hobby = reslut2.ToList();
@@ -125,6 +184,10 @@
         Clothes = reslut4.ToList();
         Expenses = reslut5.ToList();
         Education = reslut6.ToList();
+        Water = reslut7.ToList();
+        Communication = reslut8.ToList();
+        Rent = reslut9.ToList();
+        Insurance = reslut10.ToList();
 
 
         Expense = reslutE.ToList();

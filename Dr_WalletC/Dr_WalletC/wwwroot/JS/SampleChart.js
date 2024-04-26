@@ -20,52 +20,68 @@ function renderChart(chartJson) {
     window.chartObj = new Chart(ctx, JSON.parse(chartJson));
 };
 
-function renderChartTest(red,blue,yellow,green,purple,orange) {
+function renderChartTest(food, hobby, carfare, clothes, expenses, education, water, communication, rent, insurance) {
     renderChart(
         JSON.stringify({
             "type": "radar",
             "data": {
-                "labels": ["食費", "趣味・娯楽", "交通費", "衣服・美容", "特別費", "教養・教育費"],
+                "labels": ["食費", "趣味・娯楽", "交通費", "衣服・美容", "特別費","教養・教育費", "水道・光熱費", "通信費", "家賃", "税・保険"],
                 "datasets": [
                     {
                         "label": "支出",
-                        "data": [red, blue, yellow, green, purple, orange],
+                        "data": [food, hobby, carfare, clothes, expenses, education, water, communication, rent, insurance],
                         "backgroundColor": [
                             "rgba(255, 99, 132, 0.2)",
                             "rgba(54, 162, 235, 0.2)",
                             "rgba(255, 206, 86, 0.2)",
                             "rgba(75, 192, 192, 0.2)",
                             "rgba(153, 102, 255, 0.2)",
+                            "rgba(153, 102, 255, 0.2)",
+                            "rgba(153, 102, 255, 0.2)",
+                            "rgba(153, 102, 255, 0.2)",
+                            "rgba(153, 102, 255, 0.2)",
                             "rgba(255, 159, 64, 0.2)"
                         ],
                         "borderColor": [
-                            "rgba(255, 99, 132, 1)",
-                            "rgba(54, 162, 235, 1)",
-                            "rgba(255, 206, 86, 1)",
-                            "rgba(75, 192, 192, 1)",
-                            "rgba(153, 102, 255, 1)",
-                            "rgba(255, 159, 64, 1)"
+                            "rgba(255, 99, 132, 0.2)",
+                            "rgba(54, 162, 235, 0.2)",
+                            "rgba(255, 206, 86, 0.2)",
+                            "rgba(75, 192, 192, 0.2)",
+                            "rgba(153, 102, 255, 0.2)",
+                            "rgba(153, 102, 255, 0.2)",
+                            "rgba(153, 102, 255, 0.2)",
+                            "rgba(153, 102, 255, 0.2)",
+                            "rgba(153, 102, 255, 0.2)",
+                            "rgba(255, 159, 64, 0.2)"
                         ],
                         "borderWidth": 1
                     },
                     {
                         "label": "理想",
-                        "data": [10000, 10000, 10000, 10000, 10000, 10000],
+                        "data": [10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 40000, 40000],
                         "backgroundColor": [
                             "rgba(255, 99, 132, 0.2)",
                             "rgba(54, 162, 235, 0.2)",
                             "rgba(255, 206, 86, 0.2)",
                             "rgba(75, 192, 192, 0.2)",
                             "rgba(153, 102, 255, 0.2)",
+                            "rgba(153, 102, 255, 0.2)",
+                            "rgba(153, 102, 255, 0.2)",
+                            "rgba(153, 102, 255, 0.2)",
+                            "rgba(153, 102, 255, 0.2)",
                             "rgba(255, 159, 64, 0.2)"
                         ],
                         "borderColor": [
-                            "rgba(255, 99, 132, 1)",
-                            "rgba(54, 162, 235, 1)",
-                            "rgba(255, 206, 86, 1)",
-                            "rgba(75, 192, 192, 1)",
-                            "rgba(153, 102, 255, 1)",
-                            "rgba(255, 159, 64, 1)"
+                            "rgba(255, 99, 132, 0.2)",
+                            "rgba(54, 162, 235, 0.2)",
+                            "rgba(255, 206, 86, 0.2)",
+                            "rgba(75, 192, 192, 0.2)",
+                            "rgba(153, 102, 255, 0.2)",
+                            "rgba(153, 102, 255, 0.2)",
+                            "rgba(153, 102, 255, 0.2)",
+                            "rgba(153, 102, 255, 0.2)",
+                            "rgba(153, 102, 255, 0.2)",
+                            "rgba(255, 159, 64, 0.2)"
                         ],
                         "borderWidth": 1
                     }
@@ -88,21 +104,24 @@ function renderChartTest(red,blue,yellow,green,purple,orange) {
 }
 
 
-function pieChartTest(food, hobby, carfare, clothes, expenses, education) {
+function pieChartTest(food, hobby, carfare, clothes, expenses, education, water, communication, rent, insurance) {
     renderChart(
         JSON.stringify({
             "type": "pie",
             "data": {
-                "labels": ["食費", "趣味・娯楽", "交通費", "衣服・美容", "特別費", "教養・教育費"],
+                "labels": ["食費", "趣味・娯楽", "交通費", "衣服・美容", "特別費", "教養・教育費","水道・光熱費","通信費","家賃","税・保険"],
                 "datasets": [
                     {
                         "label": "支出",
-                        "data": [food, hobby, carfare, clothes, expenses, education],
+                        "data": [food, hobby, carfare, clothes, expenses, education, water, communication, rent, insurance],
                         "backgroundColor": [
                             "rgba(255, 99, 132, 0.2)",
                             "rgba(54, 162, 235, 0.2)",
                             "rgba(255, 206, 86, 0.2)",
                             "rgba(75, 192, 192, 0.2)",
+                            "rgba(153, 102, 255, 0.2)",
+                            "rgba(153, 102, 255, 0.2)",
+                            "rgba(153, 102, 255, 0.2)",
                             "rgba(153, 102, 255, 0.2)",
                             "rgba(153, 102, 255, 0.2)",
                             "rgba(255, 159, 64, 0.2)"
@@ -112,6 +131,9 @@ function pieChartTest(food, hobby, carfare, clothes, expenses, education) {
                             "rgba(54, 162, 235, 1)",
                             "rgba(255, 206, 86, 1)",
                             "rgba(75, 192, 192, 1)",
+                            "rgba(153, 102, 255, 1)",
+                            "rgba(153, 102, 255, 1)",
+                            "rgba(153, 102, 255, 1)",
                             "rgba(153, 102, 255, 1)",
                             "rgba(153, 102, 255, 1)",
                             "rgba(255, 159, 64, 1)"
