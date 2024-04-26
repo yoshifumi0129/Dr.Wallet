@@ -25,7 +25,10 @@
         <DashboardLayoutPanel Column="0" Row="2" SizeX="4" SizeY="3">
             <HeaderTemplate>支出の割合</HeaderTemplate>
             <ContentTemplate>
-                <button class="btn btn-primary btn-sm py-0" onclick="renderChartTest(@Food1,@Hobby2,@Carfare3,@Clothes4,@Expenses5,@Education6,@Water7,@Communication8,@Rent9,@Insurance10)">Click me</button>
+                <button class="btn btn-primary btn-sm py-0" onclick="renderChartTest(@Food1,@Hobby2,@Carfare3,@Clothes4,@Expenses5,@Education6,@Water7,@Communication8,@Rent9,@Insurance10,
+@IdealFood,@IdealHobby,@IdealCarfare,@IdealClothes,@IdealExpenses,@IdealEducation,@IdealWater,@IdealCommunication,@IdealRent,@IdealInsurance)">
+                    Click me
+                </button>
                 <div class="chart-container" style="position: relative; height:400px; width:600px ">
                     <canvas id="myChart" style="text-align:center"></canvas>
                 </div>
@@ -33,6 +36,7 @@
         </DashboardLayoutPanel>
     </DashboardLayoutPanels>
 </SfDashboardLayout>
+
 
 <style>
     .e-panel-header{
@@ -94,6 +98,70 @@
 }
 
 @{
+    @foreach (var items in TotalIncome)
+    {
+        TotalIncome1 += items.YearlyIcome;
+        <h1>@TotalIncome1</h1>
+    }
+
+    if (TotalIncome1 <= 300)
+    {
+        IdealFood = 52000;
+        IdealHobby = 16500;
+        IdealCarfare = 10300;
+        IdealClothes =3700;
+        IdealExpenses = 32000;
+        IdealEducation = 800;
+        IdealWater = 16800;
+        IdealCommunication = 10300;
+        IdealRent = 30000;
+        IdealInsurance = 30000;
+
+    }
+    else  if (TotalIncome1 <= 400)
+    {
+        IdealFood  = 58000;
+        IdealHobby = 18500;
+        IdealCarfare = 13300;
+        IdealClothes = 5100;
+        IdealExpenses = 37500;
+        IdealEducation = 1400;
+        IdealWater = 17800;
+        IdealCommunication = 13300;
+        IdealRent = 40000;
+        IdealInsurance = 40000;
+
+    }
+    else if (TotalIncome1 <= 500)
+    {
+        IdealFood = 64000;
+        IdealHobby = 20500;
+        IdealCarfare = 16000;
+        IdealClothes = 6500;
+        IdealExpenses = 43000;
+        IdealEducation = 3000;
+        IdealWater = 18700;
+        IdealCommunication = 16000;
+        IdealRent = 50000;
+        IdealInsurance = 60000;
+    }
+    else
+    {
+        IdealFood = 70900;
+        IdealHobby = 21300;
+        IdealCarfare = 18000;
+        IdealClothes = 7500;
+        IdealExpenses = 44600;
+        IdealEducation = 6700;
+        IdealWater = 20200;
+        IdealCommunication = 18000;
+        IdealRent = 60000;
+        IdealInsurance = 70000;
+
+    }
+}
+
+@{
     var Rate = (SumExpense / (SumIncome*0.8))*100;
     ExpenditureRate = Rate.ToString("0.0");
 
@@ -115,10 +183,8 @@
             Level = "D";
             break;
     }
-
-
- 
     
+
 }
 
 @code{
@@ -135,21 +201,37 @@
     public IList<Balance> Communication { get; set; }
     public IList<Balance> Rent { get; set; }
     public IList<Balance> Insurance { get; set; }
+    public IList<UserAccount> TotalIncome { get; set; }
 
     public string ExpenditureRate{ get; set;}
     public int SumExpense { get; set; }
     public int SumIncome { get; set; }
+
+    //カテゴリー別の合計を出すプロパティ
     public int Food1 { get; set; }
     public int Hobby2 { get; set; }
     public int Carfare3 { get; set; }
     public string Level { get; set; }
-    private int Clothes4 { get; set; }
-    private int Expenses5 { get; set; }
-    private int Education6 { get; set; }
+    public int Clothes4 { get; set; }
+    public int Expenses5 { get; set; }
+    public int Education6 { get; set; }
     public int Water7 { get; set; }
     public int Communication8 { get; set; }
     public int Rent9 { get; set; }
     public int Insurance10 { get; set; }
+    public int TotalIncome1{ get; set; }
+
+    // 理想の収支カテゴリープロパティ
+    public int IdealFood{ get; set; }
+    public int IdealHobby{ get; set; }
+    public int IdealCarfare{ get; set; }
+    public int IdealClothes{ get; set; }
+    public int IdealExpenses{ get; set; }
+    public int IdealEducation{ get; set; }
+    public int IdealWater{ get; set; }
+    public int IdealCommunication{ get; set; }
+    public int IdealRent{ get; set; }
+    public int IdealInsurance { get; set; }
 
     
     protected override void OnInitialized()
@@ -178,6 +260,8 @@
 
         IQueryable<Balance> reslut10 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 10 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
 
+        IQueryable<UserAccount> reslut11 = _context.UserAccount.FromSqlRaw("SELECT * FROM \"UserAccount\" WHERE  \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+
         Food = reslut1.ToList();
         Hobby = reslut2.ToList();
         Carfare = reslut3.ToList();
@@ -188,6 +272,7 @@
         Communication = reslut8.ToList();
         Rent = reslut9.ToList();
         Insurance = reslut10.ToList();
+        TotalIncome = reslut11.ToList();
 
 
         Expense = reslutE.ToList();

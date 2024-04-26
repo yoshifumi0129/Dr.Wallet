@@ -20,7 +20,8 @@ function renderChart(chartJson) {
     window.chartObj = new Chart(ctx, JSON.parse(chartJson));
 };
 
-function renderChartTest(food, hobby, carfare, clothes, expenses, education, water, communication, rent, insurance) {
+function renderChartTest(food, hobby, carfare, clothes, expenses, education, water, communication, rent, insurance,
+    idealFood,idealHobby,idealCarfare,idealClothes,idealExpenses,idealEducation,idealWater,idealCommunication,idealRent,idealInsurance) {
     renderChart(
         JSON.stringify({
             "type": "radar",
@@ -58,7 +59,7 @@ function renderChartTest(food, hobby, carfare, clothes, expenses, education, wat
                     },
                     {
                         "label": "理想",
-                        "data": [10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 40000, 40000],
+                        "data": [idealFood, idealHobby, idealCarfare, idealClothes, idealExpenses, idealEducation, idealWater, idealCommunication, idealRent, idealInsurance],
                         "backgroundColor": [
                             "rgba(255, 99, 132, 0.2)",
                             "rgba(54, 162, 235, 0.2)",
