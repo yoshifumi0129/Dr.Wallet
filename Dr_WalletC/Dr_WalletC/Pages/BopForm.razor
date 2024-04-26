@@ -19,22 +19,29 @@
             <label asp-for="Balance.BalanceId" class="control-label">ID</label>
             <input asp-for="Balance.BalanceId" class="form-control" @bind-value="@balance.BalanceId" />
         </div> *@
+        @* カテゴリのプルダウン *@
         <div class="form-group">
             <label asp-for="Balance.CategoryId" class="control-label">カテゴリ</label>
-            <input asp-for="Balance.CategoryId" class="form-control" @bind-value="@balance.CategoryId" />
+            <select @bind="SelectedCategoryId" 　class="form-control">
+                <option value="">-- 選択してください --</option>
+                @foreach (var category in categories)
+                {
+                    <option value="@category.CategoryId">@category.CategoryName</option>
+                }
+            </select>
         </div>
         <div class="form-group">
             <label asp-for="Balance.Bop" class="control-label">収支</label>
-            <input asp-for="Balance.Bop" class="form-control" @bind-value="@balance.Bop" />
+            <select @bind="SelectedBalance" 　class="form-control">
+                <option value="">-- 選択してください --</option>
+             　 <option value="@balance.Bop">支出</option>
+                <option value="@balance.Bop">収入</option>
+            </select>
         </div>
         <div class="form-group">
             <label asp-for="Balance.Price" class="control-label">金額</label>
             <input asp-for="Balance.Price" class="form-control" @bind-value="@balance.Price" />
         </div>
-       @*  <div class="form-group">
-            <label asp-for="Balance.DateTime" class="control-label">日付</label>
-            <input asp-for="Balance.DateTime" class="form-control" @bind-value="@balance.DateTime" />
-        </div> *@
         <div class="form-group">
             <button class="btn btn-primary">登録</button>
         </div>
@@ -69,6 +76,7 @@
             // balance.DateTime = obj;
             balance.DateTime = nowDt.ToUniversalTime();
         }
+        await LoadCategories();
     }
 
     private void OnAdd()
@@ -76,14 +84,28 @@
         errorMessage = "add person...";
         try
         {
+
+            balance.CategoryId = SelectedCategoryId;
+            balance.Bop = SelectedBalance;
             _context.Add(balance);
             _context.SaveChanges();
-         
+
         }
         catch (Exception e)
         {
             errorMessage = e.Message + "の問題が起こりました。";
         }
+    }
+
+    //カテゴリと収支のプルダウン
+    private List<Category> categories = new List<Category>();
+
+    private int SelectedCategoryId { get; set; }
+    private string SelectedBalance{ get; set; }
+
+    private async Task LoadCategories()
+    {
+        categories = await _context.Category.ToListAsync();
     }
   
 }
