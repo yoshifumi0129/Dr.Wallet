@@ -4,6 +4,10 @@
 @using Microsoft.EntityFrameworkCore;
 @inject ApplicationDbContext _context
 @inject IJSRuntime JSRuntime
+@using Microsoft.AspNetCore.Identity
+@inject AuthenticationStateProvider AuthStateProvider
+@inject UserManager<IdentityUser> UserManager
+@using System.Security.Claims
 
 <PageTitle>Counter</PageTitle>
 @* <h1>ダッシュボードテンプレートです</h1> *@
@@ -36,7 +40,10 @@
         </DashboardLayoutPanel>
     </DashboardLayoutPanels>
 </SfDashboardLayout>
-
+@* <h1>Hello, world!</h1>
+<h5>ログインユーザID: @userId</h5>
+<h5>ログインユーザ名: @loginName</h5>
+<h5>@nowDt </h5> *@
 
 <style>
     .e-panel-header{
@@ -101,7 +108,7 @@
     @foreach (var items in TotalIncome)
     {
         TotalIncome1 += items.YearlyIcome;
-        <h1>@TotalIncome1</h1>
+        // <h1>@TotalIncome1</h1>
     }
 
     if (TotalIncome1 <= 300)
@@ -188,7 +195,7 @@
 }
 
 @code{
-    public IList<Balance> balance { get; set; }
+    // public IList<Balance> balance { get; set; }
     public IList<Balance> Expense { get; set; }
     public IList<Balance> Income { get; set; }
     public IList<Balance> Food { get; set; }
@@ -233,52 +240,117 @@
     public int IdealRent{ get; set; }
     public int IdealInsurance { get; set; }
 
-    
-    protected override void OnInitialized()
+    private string loginName = "";
+    private string errorMessage = "";
+    private string userId;
+    private DateTime nowDt = DateTime.Now;
+    private Balance balance = new Balance();
+
+    protected override async Task OnInitializedAsync()
     {
-        IQueryable<Balance> reslutE = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"Bop\" = '支出' AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+        // AuthenticationStateProviderから現在の認証状態を取得
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var authuser = authState.User;
+        // ユーザーが認証済みの場合は、Identity.Nameからログイン名を取得して返す
+        if (authuser.Identity.IsAuthenticated)
+        {
+            // ログイン名取得
+            loginName = authuser.Identity.Name;
+            // ログインID取得
+            userId = authuser.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            balance.UserAccountId = userId;
+            // var obj = DateTime.SpecifyKind(nowDt, DateTimeKind.Utc);
+            // balance.DateTime = obj;
+            balance.DateTime = nowDt.ToUniversalTime();
 
-        IQueryable<Balance> reslutI = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"Bop\" = '収入' AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+            IQueryable<Balance> reslutE = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"Bop\" = '支出' AND \"UserAccountId\" = '{userId}'");
 
-        IQueryable<Balance> reslut1 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 1 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+            IQueryable<Balance> reslutI = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"Bop\" = '収入' AND \"UserAccountId\" = '{userId}'");
 
-        IQueryable<Balance> reslut2 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 2 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+            IQueryable<Balance> reslut1 = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 1 AND \"UserAccountId\" = '{userId}'");
 
-        IQueryable<Balance> reslut3 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 3 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+            IQueryable<Balance> reslut2 = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 2 AND \"UserAccountId\" = '{userId}'");
 
-        IQueryable<Balance> reslut4 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 4 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+            IQueryable<Balance> reslut3 = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 3 AND \"UserAccountId\" = '{userId}'");
 
-        IQueryable<Balance> reslut5 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 5 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+            IQueryable<Balance> reslut4 = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 4 AND \"UserAccountId\" = '{userId}'");
 
-        IQueryable<Balance> reslut6 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 6 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+            IQueryable<Balance> reslut5 = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 5 AND \"UserAccountId\" = '{userId}'");
+
+            IQueryable<Balance> reslut6 = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 6 AND \"UserAccountId\" = '{userId}'");
+
+            IQueryable<Balance> reslut7 = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 7 AND \"UserAccountId\" = '{userId}'");
+
+            IQueryable<Balance> reslut8 = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 8 AND \"UserAccountId\" = '{userId}'");
+
+            IQueryable<Balance> reslut9 = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 9 AND \"UserAccountId\" = '{userId}'");
+
+            IQueryable<Balance> reslut10 = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 10 AND \"UserAccountId\" = '{userId}'");
+
+            IQueryable<UserAccount> reslut11 = _context.UserAccount.FromSqlRaw($"SELECT * FROM \"UserAccount\" WHERE  \"UserAccountId\" = '{userId}'");
+
+            Food = reslut1.ToList();
+            Hobby = reslut2.ToList();
+            Carfare = reslut3.ToList();
+            Clothes = reslut4.ToList();
+            Expenses = reslut5.ToList();
+            Education = reslut6.ToList();
+            Water = reslut7.ToList();
+            Communication = reslut8.ToList();
+            Rent = reslut9.ToList();
+            Insurance = reslut10.ToList();
+            TotalIncome = reslut11.ToList();
+
+
+            Expense = reslutE.ToList();
+            Income = reslutI.ToList();
+        }
+     }
+    // protected override void OnInitialized()
+    // {
+        // IQueryable<Balance> reslutE = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"Bop\" = '支出' AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+
+        // IQueryable<Balance> reslutI = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"Bop\" = '収入' AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+
+        // IQueryable<Balance> reslut1 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 1 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+
+        // IQueryable<Balance> reslut2 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 2 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+
+        // IQueryable<Balance> reslut3 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 3 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+
+        // IQueryable<Balance> reslut4 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 4 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+
+        // IQueryable<Balance> reslut5 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 5 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+
+        // IQueryable<Balance> reslut6 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 6 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
        
-        IQueryable<Balance> reslut7 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 7 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+        // IQueryable<Balance> reslut7 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 7 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
 
-        IQueryable<Balance> reslut8 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 8 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+        // IQueryable<Balance> reslut8 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 8 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
 
-        IQueryable<Balance> reslut9 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 9 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+        // IQueryable<Balance> reslut9 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 9 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
 
-        IQueryable<Balance> reslut10 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 10 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+        // IQueryable<Balance> reslut10 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 10 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
 
-        IQueryable<UserAccount> reslut11 = _context.UserAccount.FromSqlRaw("SELECT * FROM \"UserAccount\" WHERE  \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+        // IQueryable<UserAccount> reslut11 = _context.UserAccount.FromSqlRaw("SELECT * FROM \"UserAccount\" WHERE  \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
 
-        Food = reslut1.ToList();
-        Hobby = reslut2.ToList();
-        Carfare = reslut3.ToList();
-        Clothes = reslut4.ToList();
-        Expenses = reslut5.ToList();
-        Education = reslut6.ToList();
-        Water = reslut7.ToList();
-        Communication = reslut8.ToList();
-        Rent = reslut9.ToList();
-        Insurance = reslut10.ToList();
-        TotalIncome = reslut11.ToList();
+        // Food = reslut1.ToList();
+        // Hobby = reslut2.ToList();
+        // Carfare = reslut3.ToList();
+        // Clothes = reslut4.ToList();
+        // Expenses = reslut5.ToList();
+        // Education = reslut6.ToList();
+        // Water = reslut7.ToList();
+        // Communication = reslut8.ToList();
+        // Rent = reslut9.ToList();
+        // Insurance = reslut10.ToList();
+        // TotalIncome = reslut11.ToList();
 
 
-        Expense = reslutE.ToList();
-        Income = reslutI.ToList();
+        // Expense = reslutE.ToList();
+        // Income = reslutI.ToList();
 
-    }
+    // }
 
 }
 
