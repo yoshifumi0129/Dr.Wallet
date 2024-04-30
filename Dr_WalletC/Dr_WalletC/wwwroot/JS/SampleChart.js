@@ -159,8 +159,9 @@ function pieChartTest(food, hobby, carfare, clothes, expenses, education, water,
                         }
                     ]
                 }
-            }, plugins: [ChartDataLabels],
-            options: {
+            }, "plugins": [ChartDataLabels],
+            "options": {
+
             }
         })
     );

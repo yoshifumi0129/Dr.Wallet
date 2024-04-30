@@ -9,6 +9,8 @@
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<IdentityUser> UserManager
 @using System.Security.Claims
+@using Microsoft.AspNetCore.Authorization;
+
 
 <div class="text-center">
     <h1>収支入力</h1>
@@ -16,7 +18,7 @@
         <div class="text-danger">@errorMessage</div>
 
         <div class="form-group ">
-            <label asp-for="Balance.CategoryId" class="control-label ">カテゴリ</label>
+            <label asp-for="Balance.CategoryId" class="control-label ">カテゴリ-</label>
             <select @bind="SelectedCategoryId" 　class="form-control">
                 <option value="">-- 選択してください --</option>
                 @foreach (var category in categories)
@@ -48,6 +50,7 @@
 <h5>ログインユーザ名: @loginName</h5>
 <h5>@nowDt </h5> *@
 @code {
+    
     private string loginName = "";
     private Balance balance = new Balance();
     private string errorMessage = "";
