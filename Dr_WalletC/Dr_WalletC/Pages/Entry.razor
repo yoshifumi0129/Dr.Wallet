@@ -11,7 +11,7 @@
 @using System.Security.Claims
 @using Microsoft.AspNetCore.Authorization;
 
-<AuthorizeView>
+
 <div class="text-center">
     <h1>プロフィール設定</h1>
     <p>初めての方はご入力ください</p>
@@ -39,7 +39,7 @@
         </div>
     </EditForm>
 </div>
-</AuthorizeView>
+
 
 @* <h1>Hello, world!</h1>
 <h5>ログインユーザID: @userId</h5>
@@ -67,6 +67,11 @@
             // ログインID取得
             userId = authUser.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             user.UserAccountId = userId;
+       
+        }
+        else
+        {
+            NavManager.NavigateTo("/");
         }
     }
 

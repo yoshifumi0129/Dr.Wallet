@@ -8,6 +8,7 @@
 @inject AuthenticationStateProvider AuthStateProvider
 @inject UserManager<IdentityUser> UserManager
 @using System.Security.Claims
+@inject NavigationManager NavManager
 
 <PageTitle>Counter</PageTitle>
 @* <h1>ダッシュボードテンプレートです</h1> *@
@@ -562,51 +563,56 @@
             // balance.DateTime = obj;
             balance.DateTime = nowDt.ToUniversalTime();
 
-            IQueryable<Balance> reslutE = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"Bop\" = '支出' AND \"UserAccountId\" = '{userId}'");
-
-            IQueryable<Balance> reslutI = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"Bop\" = '収入' AND \"UserAccountId\" = '{userId}'");
-
-            IQueryable<Balance> reslut1 = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 1 AND \"UserAccountId\" = '{userId}'");
-
-            IQueryable<Balance> reslut2 = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 2 AND \"UserAccountId\" = '{userId}'");
-
-            IQueryable<Balance> reslut3 = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 3 AND \"UserAccountId\" = '{userId}'");
-
-            IQueryable<Balance> reslut4 = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 4 AND \"UserAccountId\" = '{userId}'");
-
-            IQueryable<Balance> reslut5 = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 5 AND \"UserAccountId\" = '{userId}'");
-
-            IQueryable<Balance> reslut6 = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 6 AND \"UserAccountId\" = '{userId}'");
-
-            IQueryable<Balance> reslut7 = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 7 AND \"UserAccountId\" = '{userId}'");
-
-            IQueryable<Balance> reslut8 = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 8 AND \"UserAccountId\" = '{userId}'");
-
-            IQueryable<Balance> reslut9 = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 9 AND \"UserAccountId\" = '{userId}'");
-
-            IQueryable<Balance> reslut10 = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 10 AND \"UserAccountId\" = '{userId}'");
-
-            IQueryable<UserAccount> reslut11 = _context.UserAccount.FromSqlRaw($"SELECT * FROM \"UserAccount\" WHERE  \"UserAccountId\" = '{userId}'");
-
-
-
-            Food = reslut1.ToList();
-            Hobby = reslut2.ToList();
-            Carfare = reslut3.ToList();
-            Clothes = reslut4.ToList();
-            Expenses = reslut5.ToList();
-            Education = reslut6.ToList();
-            Water = reslut7.ToList();
-            Communication = reslut8.ToList();
-            Rent = reslut9.ToList();
-            Insurance = reslut10.ToList();
-            UserAccounts = reslut11.ToList();
-
             // Household = reslut12.ToList();
 
-            Expense = reslutE.ToList();
-            Income = reslutI.ToList();
         }
+        else
+        {
+            NavManager.NavigateTo("/");
+        }
+
+        IQueryable<Balance> reslutE = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"Bop\" = '支出' AND \"UserAccountId\" = '{userId}'");
+
+        IQueryable<Balance> reslutI = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"Bop\" = '収入' AND \"UserAccountId\" = '{userId}'");
+
+        IQueryable<Balance> reslut1 = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 1 AND \"UserAccountId\" = '{userId}'");
+
+        IQueryable<Balance> reslut2 = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 2 AND \"UserAccountId\" = '{userId}'");
+
+        IQueryable<Balance> reslut3 = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 3 AND \"UserAccountId\" = '{userId}'");
+
+        IQueryable<Balance> reslut4 = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 4 AND \"UserAccountId\" = '{userId}'");
+
+        IQueryable<Balance> reslut5 = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 5 AND \"UserAccountId\" = '{userId}'");
+
+        IQueryable<Balance> reslut6 = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 6 AND \"UserAccountId\" = '{userId}'");
+
+        IQueryable<Balance> reslut7 = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 7 AND \"UserAccountId\" = '{userId}'");
+
+        IQueryable<Balance> reslut8 = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 8 AND \"UserAccountId\" = '{userId}'");
+
+        IQueryable<Balance> reslut9 = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 9 AND \"UserAccountId\" = '{userId}'");
+
+        IQueryable<Balance> reslut10 = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 10 AND \"UserAccountId\" = '{userId}'");
+
+        IQueryable<UserAccount> reslut11 = _context.UserAccount.FromSqlRaw($"SELECT * FROM \"UserAccount\" WHERE  \"UserAccountId\" = '{userId}'");
+
+
+
+        Food = reslut1.ToList();
+        Hobby = reslut2.ToList();
+        Carfare = reslut3.ToList();
+        Clothes = reslut4.ToList();
+        Expenses = reslut5.ToList();
+        Education = reslut6.ToList();
+        Water = reslut7.ToList();
+        Communication = reslut8.ToList();
+        Rent = reslut9.ToList();
+        Insurance = reslut10.ToList();
+        UserAccounts = reslut11.ToList();
+
+        Expense = reslutE.ToList();
+        Income = reslutI.ToList();
     }
 
     private Years years = new Years();

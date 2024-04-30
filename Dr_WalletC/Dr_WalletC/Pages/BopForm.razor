@@ -50,7 +50,7 @@
 <h5>ログインユーザ名: @loginName</h5>
 <h5>@nowDt </h5> *@
 @code {
-    
+
     private string loginName = "";
     private Balance balance = new Balance();
     private string errorMessage = "";
@@ -73,6 +73,10 @@
             // var obj = DateTime.SpecifyKind(nowDt, DateTimeKind.Utc);
             // balance.DateTime = obj;
             balance.DateTime = nowDt.ToUniversalTime();
+        }
+        else
+        {
+            NavManager.NavigateTo("/");
         }
         await LoadCategories();
     }
