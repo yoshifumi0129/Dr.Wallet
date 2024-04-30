@@ -12,20 +12,21 @@
 
 <div class="text-center">
     <h1>プロフィール設定</h1>
-
+    <p>初めての方はご入力ください</p>
     <EditForm Model="@user" OnSubmit="OnAdd">
         <div class="text-danger">@errorMessage</div>
-      @*   <div class="form-group">
-            <label asp-for="User.UserAccountId" class="control-label">ID</label>
-            <input asp-for="User.UserAccountId" class="form-control" @bind-value="@user.UserAccountId"  />
-        </div> *@
-        <div class="form-group">
+        <div class="form-group ">
             <label asp-for="User.Name" class="control-label">名前</label>
             <input asp-for="User.Name" class="form-control" @bind-value="@user.Name" />
         </div>
-        <div class="form-group">
+        <div class="form-group ">
             <label asp-for="User.Household" class="control-label">家族構成</label>
-            <input asp-for="User.Household" class="form-control" @bind-value="@user.Household" />
+            <select @bind="SelectedHousehold" class="form-control">
+                <option value="">-- 選択してください --</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+            </select>
         </div>
         <div class="form-group">
             <label asp-for="User.YearlyIncome" class="control-label">年収</label>
@@ -48,6 +49,7 @@
     private UserAccount user = new UserAccount();
     private string errorMessage = "";
     private string userId;
+    private int SelectedHousehold { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -67,17 +69,18 @@
 
     private void OnAdd()
     {
-        errorMessage = "add person...";
+        errorMessage = " 登録完了...";
         try
         {
+            user.Household = SelectedHousehold;
             _context.Add(user);
             _context.SaveChanges();
- 
+
         }
         catch (Exception e)
         {
             errorMessage = e.Message + "の問題が起こりました。";
         }
     }
-  
+
 }

@@ -12,29 +12,83 @@
 <PageTitle>Counter</PageTitle>
 @* <h1>ダッシュボードテンプレートです</h1> *@
 
+
+<EditForm Model="@years" OnSubmit="OnAdd">
+    <div class="form-group col-md-4">
+        <label class="control-label">西暦</label>
+        <select @bind="SelectedYear" class="form-control">
+            <option value="">-- 選択してください --</option>
+            <option value="@years.YearsId">2024</option>
+            <option value="@years.YearsId">2025</option>
+            <option value="@years.YearsId">2026</option>
+            <option value="@years.YearsId">2027</option>
+            <option value="@years.YearsId">2028</option>
+            <option value="@years.YearsId">2029</option>
+            <option value="@years.YearsId">2030</option>
+            <option value="@years.YearsId">2031</option>
+            <option value="@years.YearsId">2032</option>
+            <option value="@years.YearsId">2033</option>
+            <option value="@years.YearsId">2034</option>
+        </select>
+    </div>
+    <div class="form-group col-md-4">
+        <label class="control-label">月</label>
+        <select @bind="SelectMonth" 　class="form-control">
+            <option value="">-- 選択してください --</option>
+            <option value="@years.Month">04</option>
+            <option value="@years.Month">05</option>
+            <option value="@years.Month">06</option>
+            <option value="@years.Month">07</option>
+            <option value="@years.Month">08</option>
+            <option value="@years.Month">09</option>
+            <option value="@years.Month">10</option>
+            <option value="@years.Month">11</option>
+            <option value="@years.Month">12</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <button class="btn btn-primary">完了</button>
+    </div>
+</EditForm>
+
 <SfDashboardLayout Columns="6" AllowResizing=true>
     <DashboardLayoutPanels>
-        <DashboardLayoutPanel Column="0" Row="0" SizeX="2" SizeY="1">
-            <HeaderTemplate>レベル</HeaderTemplate>
-            <ContentTemplate>
-                <h3>@Level</h3>
-            </ContentTemplate>
-        </DashboardLayoutPanel>
-        <DashboardLayoutPanel Column="3" Row="0" SizeX="4" SizeY="1">
-            <HeaderTemplate>アドバイス</HeaderTemplate>
-            <ContentTemplate>
-                <h3>今月の支出率　@ExpenditureRate％</h3>
-            </ContentTemplate>
-        </DashboardLayoutPanel>
         <DashboardLayoutPanel Column="0" Row="2" SizeX="4" SizeY="3">
+            <HeaderTemplate>☆レベル　サマリー</HeaderTemplate>
+            <ContentTemplate>
+                <h4>@Level</h4>
+                <br />
+                <h3>@CommentFood</h3>
+                <h3>@CommentHobby</h3>
+                <h3>@CommentCarfare</h3>
+                <h3>@CommentClothes</h3>
+                <h3>@CommentExpenses</h3>
+                <h3>@CommentEducation</h3>
+                <h3>@CommentWater</h3>
+                <h3>@CommentCommunication</h3>
+                <h3>@CommentRent</h3>
+                <h3>@CommentInsurance</h3>
+                <br />
+                <h3>来月は上記項目を気をつけましょう‼</h3>
+            </ContentTemplate>
+        </DashboardLayoutPanel>
+        <DashboardLayoutPanel Column="0" Row="0" SizeX="6" SizeY="1">
+            <HeaderTemplate>支出率</HeaderTemplate>
+            <ContentTemplate>
+                <br />
+                <br />
+                <h4>今月の支出率　@ExpenditureRate％</h4>
+            </ContentTemplate>
+        </DashboardLayoutPanel>
+        <DashboardLayoutPanel Column="4" Row="2" SizeX="2" SizeY="3">
             <HeaderTemplate>支出の割合</HeaderTemplate>
             <ContentTemplate>
                 <button class="btn btn-primary btn-sm py-0" onclick="renderChartTest(@Food1,@Hobby2,@Carfare3,@Clothes4,@Expenses5,@Education6,@Water7,@Communication8,@Rent9,@Insurance10,
 @IdealFood,@IdealHobby,@IdealCarfare,@IdealClothes,@IdealExpenses,@IdealEducation,@IdealWater,@IdealCommunication,@IdealRent,@IdealInsurance)">
-                    Click me
+                    表示
                 </button>
                 <div class="chart-container" style="position: relative; height:400px; width:600px ">
-                    <canvas id="myChart" style="text-align:center"></canvas>
+                    <canvas id="myChart" style="text-align:right"></canvas>
                 </div>
             </ContentTemplate>
         </DashboardLayoutPanel>
@@ -44,14 +98,32 @@
 <h5>ログインユーザID: @userId</h5>
 <h5>ログインユーザ名: @loginName</h5>
 <h5>@nowDt </h5> *@
+<style>
+    h4 {
+        color: #0bd;
+        font-size: 70px;
+    }
+
+    h2 {
+        color: #647ff7;
+        font-size: 35px;
+    }
+
+    h3 {
+        color: red;
+        font-size: 33px;
+    }
+</style>
+
 
 <style>
-    .e-panel-header{
-        text-align:center
+    .e-panel-header {
+        text-align: center
     }
-    .e-panel-content{
-        text-align:center;
-        margin-top:10px;
+
+    .e-panel-content {
+        text-align: center;
+        margin-top: 10px;
     }
 </style>
 @foreach (var items in Expense)
@@ -105,112 +177,326 @@
 }
 
 @{
-    @foreach (var items in TotalIncome)
+    @foreach (var items in UserAccounts)
     {
         TotalIncome1 += items.YearlyIcome;
+        Household1 += items.Household;
         // <h1>@TotalIncome1</h1>
     }
 
-    if (TotalIncome1 <= 300)
+    if (Household1 == 1)
     {
-        IdealFood = 52000;
-        IdealHobby = 16500;
-        IdealCarfare = 10300;
-        IdealClothes =3700;
-        IdealExpenses = 32000;
-        IdealEducation = 800;
-        IdealWater = 16800;
-        IdealCommunication = 10300;
-        IdealRent = 30000;
-        IdealInsurance = 30000;
+        if (TotalIncome1 <= 300)
+        {
+            IdealFood = 52000;
+            IdealHobby = 16500;
+            IdealCarfare = 10300;
+            IdealClothes = 3700;
+            IdealExpenses = 32000;
+            IdealEducation = 800;
+            IdealWater = 16800;
+            IdealCommunication = 10300;
+            IdealRent = 30000;
+            IdealInsurance = 30000;
 
-    }
-    else  if (TotalIncome1 <= 400)
-    {
-        IdealFood  = 58000;
-        IdealHobby = 18500;
-        IdealCarfare = 13300;
-        IdealClothes = 5100;
-        IdealExpenses = 37500;
-        IdealEducation = 1400;
-        IdealWater = 17800;
-        IdealCommunication = 13300;
-        IdealRent = 40000;
-        IdealInsurance = 40000;
+        }
+        else if (TotalIncome1 <= 400)
+        {
+            IdealFood = 58000;
+            IdealHobby = 18500;
+            IdealCarfare = 13300;
+            IdealClothes = 5100;
+            IdealExpenses = 37500;
+            IdealEducation = 1400;
+            IdealWater = 17800;
+            IdealCommunication = 13300;
+            IdealRent = 40000;
+            IdealInsurance = 40000;
 
+        }
+        else if (TotalIncome1 <= 500)
+        {
+            IdealFood = 64000;
+            IdealHobby = 20500;
+            IdealCarfare = 16000;
+            IdealClothes = 6500;
+            IdealExpenses = 43000;
+            IdealEducation = 3000;
+            IdealWater = 18700;
+            IdealCommunication = 16000;
+            IdealRent = 50000;
+            IdealInsurance = 60000;
+        }
+        else
+        {
+            IdealFood = 70900;
+            IdealHobby = 21300;
+            IdealCarfare = 18000;
+            IdealClothes = 7500;
+            IdealExpenses = 44600;
+            IdealEducation = 6700;
+            IdealWater = 20200;
+            IdealCommunication = 18000;
+            IdealRent = 60000;
+            IdealInsurance = 70000;
+
+        }
     }
-    else if (TotalIncome1 <= 500)
+    else if (Household1 == 2)
     {
-        IdealFood = 64000;
-        IdealHobby = 20500;
-        IdealCarfare = 16000;
-        IdealClothes = 6500;
-        IdealExpenses = 43000;
-        IdealEducation = 3000;
-        IdealWater = 18700;
-        IdealCommunication = 16000;
-        IdealRent = 50000;
-        IdealInsurance = 60000;
+        if (TotalIncome1 <= 300)
+        {
+            IdealFood = 52000 * 2;
+            IdealHobby = 16500 * 2;
+            IdealCarfare = 10300 * 2;
+            IdealClothes = 3700 * 2;
+            IdealExpenses = 32000 * 2;
+            IdealEducation = 800 * 2;
+            IdealWater = 16800 * 2;
+            IdealCommunication = 10300 * 2;
+            IdealRent = 30000 * 2;
+            IdealInsurance = 30000 * 2;
+
+        }
+        else if (TotalIncome1 <= 400)
+        {
+            IdealFood = 58000 * 2;
+            IdealHobby = 18500 * 2;
+            IdealCarfare = 13300 * 2;
+            IdealClothes = 5100 * 2;
+            IdealExpenses = 37500 * 2;
+            IdealEducation = 1400 * 2;
+            IdealWater = 17800 * 2;
+            IdealCommunication = 13300 * 2;
+            IdealRent = 40000 * 2;
+            IdealInsurance = 40000 * 2;
+
+        }
+        else if (TotalIncome1 <= 500)
+        {
+            IdealFood = 64000 * 2;
+            IdealHobby = 20500 * 2;
+            IdealCarfare = 16000 * 2;
+            IdealClothes = 6500 * 2;
+            IdealExpenses = 43000 * 2;
+            IdealEducation = 3000 * 2;
+            IdealWater = 18700 * 2;
+            IdealCommunication = 16000 * 2;
+            IdealRent = 50000 * 2;
+            IdealInsurance = 60000 * 2;
+        }
+        else
+        {
+            IdealFood = 70900 * 2;
+            IdealHobby = 21300 * 2;
+            IdealCarfare = 18000 * 2;
+            IdealClothes = 7500 * 2;
+            IdealExpenses = 44600 * 2;
+            IdealEducation = 6700 * 2;
+            IdealWater = 20200 * 2;
+            IdealCommunication = 18000 * 2;
+            IdealRent = 60000 * 2;
+            IdealInsurance = 70000 * 2;
+
+        }
+
     }
     else
     {
-        IdealFood = 70900;
-        IdealHobby = 21300;
-        IdealCarfare = 18000;
-        IdealClothes = 7500;
-        IdealExpenses = 44600;
-        IdealEducation = 6700;
-        IdealWater = 20200;
-        IdealCommunication = 18000;
-        IdealRent = 60000;
-        IdealInsurance = 70000;
 
+        if (TotalIncome1 <= 300)
+        {
+            IdealFood = 52000 * 3;
+            IdealHobby = 16500 * 3;
+            IdealCarfare = 10300 * 3;
+            IdealClothes = 3700 * 3;
+            IdealExpenses = 32000 * 3;
+            IdealEducation = 800 * 3;
+            IdealWater = 16800 * 3;
+            IdealCommunication = 10300 * 3;
+            IdealRent = 30000 * 3;
+            IdealInsurance = 30000 * 3;
+
+        }
+        else if (TotalIncome1 <= 400)
+        {
+            IdealFood = 58000 * 3;
+            IdealHobby = 18500 * 3;
+            IdealCarfare = 13300 * 3;
+            IdealClothes = 5100 * 3;
+            IdealExpenses = 37500 * 3;
+            IdealEducation = 1400 * 3;
+            IdealWater = 17800 * 3;
+            IdealCommunication = 13300 * 3;
+            IdealRent = 40000 * 3;
+            IdealInsurance = 40000 * 3;
+
+        }
+        else if (TotalIncome1 <= 500)
+        {
+            IdealFood = 64000 * 3;
+            IdealHobby = 20500 * 3;
+            IdealCarfare = 16000 * 3;
+            IdealClothes = 6500 * 3;
+            IdealExpenses = 43000 * 3;
+            IdealEducation = 3000 * 3;
+            IdealWater = 18700 * 3;
+            IdealCommunication = 16000 * 3;
+            IdealRent = 50000 * 3;
+            IdealInsurance = 60000 * 3;
+        }
+        else
+        {
+            IdealFood = 70900 * 3;
+            IdealHobby = 21300 * 3;
+            IdealCarfare = 18000 * 3;
+            IdealClothes = 7500 * 3;
+            IdealExpenses = 44600 * 3;
+            IdealEducation = 6700 * 3;
+            IdealWater = 20200 * 3;
+            IdealCommunication = 18000 * 3;
+            IdealRent = 60000 * 3;
+            IdealInsurance = 70000 * 3;
+
+        }
     }
 }
 
 @{
-    var Rate = (SumExpense / (SumIncome*0.8))*100;
+    var Rate = (SumExpense / (SumIncome * 0.8)) * 100;
     ExpenditureRate = Rate.ToString("0.0");
 
     switch (Rate)
     {
-        case  <=70:
-            Level = "S";
+        case <= 70:
+            Level = "Ｓ(支出率70%以下)";
             break;
-        case  <=80:
-            Level = "A";
+        case <= 80:
+            Level = "Ａ(支出率70～80%)";
             break;
         case <= 90:
-            Level = "B";
+            Level = "Ｂ(支出率80～90%)";
             break;
         case <= 100:
-            Level = "C";
+            Level = "Ｃ(支出率90～100%)";
             break;
-        case <= 200:
-            Level = "D";
+        case >= 100:
+            Level = "Ｄ(支出率100%以上)";
             break;
     }
-    
+
+    if ((Food1 - IdealFood) > 0)
+    {
+        CommentFood = $"食費が{Food1 - IdealFood}円超過";
+    }
+    else
+    {
+        // CommentFood = $"食費を{IdealFood - Food1}円貯金できました。";
+    }
+
+    if ((Hobby2 - IdealHobby) > 0)
+    {
+        CommentHobby = $"趣味/娯楽が{Hobby2 - IdealHobby}円超過";
+    }
+    else
+    {
+        // CommentHobby = $"趣味/娯楽を{IdealHobby - Hobby2}円貯金できました。";
+    }
+
+    if ((Carfare3 - IdealCarfare) > 0)
+    {
+        CommentCarfare = $"交通費が{Carfare3 - IdealCarfare}円超過";
+    }
+    else
+    {
+        // CommentCarfare = $"交通費を{IdealCarfare - Carfare3}円貯金できました。";
+    }
+
+    if ((Clothes4 - IdealClothes) > 0)
+    {
+        CommentClothes = $"衣服/美容が{Clothes4 - IdealClothes}円超過";
+    }
+    else
+    {
+        // CommentClothes = $"衣服/美容を{IdealClothes - Clothes4}円貯金できました。";
+    }
+
+    if ((Expenses5 - IdealExpenses) > 0)
+    {
+        CommentExpenses = $"特別費が{Expenses5 - IdealExpenses}円超過";
+    }
+    else
+    {
+        // CommentExpenses = $"特別費を{IdealExpenses - Expenses5}円貯金できました。";
+    }
+
+    if ((Education6 - IdealEducation) > 0)
+    {
+        CommentEducation = $"教養/教育費が{Education6 - IdealEducation}円超過";
+    }
+    else
+    {
+        // CommentEducation = $"教養/教育費を{IdealEducation - Education6}円貯金できました。";
+    }
+
+    if ((Water7 - IdealWater) > 0)
+    {
+        CommentWater = $"水道/光熱費が{Water7 - IdealWater}円超過";
+    }
+    else
+    {
+        // CommentWater = $"水道費/光熱費を{IdealWater - Water7}円貯金できました。";
+    }
+
+    if ((Communication8 - IdealWater) > 0)
+    {
+        CommentCommunication = $"通信費が{Communication8 - IdealCommunication}円超過";
+    }
+    else
+    {
+        // CommentCommunication = $"通信費を{IdealCommunication - Communication8}円貯金できました。";
+    }
+
+    if ((Rent9 - IdealRent) > 0)
+    {
+        CommentRent = $"家賃が{Rent9 - IdealRent}円超過";
+    }
+    else
+    {
+        // CommentRent = $"家賃を{IdealRent - Rent9}円貯金できました。";
+    }
+
+
+    if ((Insurance10 - IdealInsurance) > 0)
+    {
+        CommentInsurance = $"税/保険が{Insurance10 - IdealInsurance}円超過";
+    }
+    else
+    {
+        // CommentInsurance = $"税/保険を{IdealInsurance - Insurance10}円貯金できました。";
+    }
+
 
 }
 
-@code{
-    // public IList<Balance> balance { get; set; }
-    public IList<Balance> Expense { get; set; }
-    public IList<Balance> Income { get; set; }
-    public IList<Balance> Food { get; set; }
-    public IList<Balance> Hobby { get; set; }
-    public IList<Balance> Carfare { get; set; }
-    public IList<Balance> Clothes { get; set; }
-    public IList<Balance> Expenses { get; set; }
-    public IList<Balance> Education { get; set; }
-    public IList<Balance> Water { get; set; }
-    public IList<Balance> Communication { get; set; }
-    public IList<Balance> Rent { get; set; }
-    public IList<Balance> Insurance { get; set; }
-    public IList<UserAccount> TotalIncome { get; set; }
+@code {
 
-    public string ExpenditureRate{ get; set;}
+    public IList<Balance>? Expense { get; set; }
+    public IList<Balance>? Income { get; set; }
+    public IList<Balance>? Food { get; set; }
+    public IList<Balance>? Hobby { get; set; }
+    public IList<Balance>? Carfare { get; set; }
+    public IList<Balance>? Clothes { get; set; }
+    public IList<Balance>? Expenses { get; set; }
+    public IList<Balance>? Education { get; set; }
+    public IList<Balance>? Water { get; set; }
+    public IList<Balance>? Communication { get; set; }
+    public IList<Balance>? Rent { get; set; }
+    public IList<Balance>? Insurance { get; set; }
+    public IList<UserAccount>? UserAccounts { get; set; }
+
+
+    public string? ExpenditureRate { get; set; }
     public int SumExpense { get; set; }
     public int SumIncome { get; set; }
 
@@ -218,7 +504,7 @@
     public int Food1 { get; set; }
     public int Hobby2 { get; set; }
     public int Carfare3 { get; set; }
-    public string Level { get; set; }
+    public string? Level { get; set; }
     public int Clothes4 { get; set; }
     public int Expenses5 { get; set; }
     public int Education6 { get; set; }
@@ -226,19 +512,32 @@
     public int Communication8 { get; set; }
     public int Rent9 { get; set; }
     public int Insurance10 { get; set; }
-    public int TotalIncome1{ get; set; }
+    public int TotalIncome1 { get; set; }
+    public int Household1 { get; set; }
 
     // 理想の収支カテゴリープロパティ
-    public int IdealFood{ get; set; }
-    public int IdealHobby{ get; set; }
-    public int IdealCarfare{ get; set; }
-    public int IdealClothes{ get; set; }
-    public int IdealExpenses{ get; set; }
-    public int IdealEducation{ get; set; }
-    public int IdealWater{ get; set; }
-    public int IdealCommunication{ get; set; }
-    public int IdealRent{ get; set; }
+    public int IdealFood { get; set; }
+    public int IdealHobby { get; set; }
+    public int IdealCarfare { get; set; }
+    public int IdealClothes { get; set; }
+    public int IdealExpenses { get; set; }
+    public int IdealEducation { get; set; }
+    public int IdealWater { get; set; }
+    public int IdealCommunication { get; set; }
+    public int IdealRent { get; set; }
     public int IdealInsurance { get; set; }
+
+    //サマリー結果コメントプロパティ
+    public string? CommentFood { get; set; }
+    public string? CommentHobby { get; set; }
+    public string? CommentCarfare { get; set; }
+    public string? CommentClothes { get; set; }
+    public string? CommentExpenses { get; set; }
+    public string? CommentEducation { get; set; }
+    public string? CommentWater { get; set; }
+    public string? CommentCommunication { get; set; }
+    public string? CommentRent { get; set; }
+    public string? CommentInsurance { get; set; }
 
     private string loginName = "";
     private string errorMessage = "";
@@ -289,6 +588,8 @@
 
             IQueryable<UserAccount> reslut11 = _context.UserAccount.FromSqlRaw($"SELECT * FROM \"UserAccount\" WHERE  \"UserAccountId\" = '{userId}'");
 
+
+
             Food = reslut1.ToList();
             Hobby = reslut2.ToList();
             Carfare = reslut3.ToList();
@@ -299,58 +600,86 @@
             Communication = reslut8.ToList();
             Rent = reslut9.ToList();
             Insurance = reslut10.ToList();
-            TotalIncome = reslut11.ToList();
+            UserAccounts = reslut11.ToList();
 
+            // Household = reslut12.ToList();
 
             Expense = reslutE.ToList();
             Income = reslutI.ToList();
         }
-     }
-    // protected override void OnInitialized()
-    // {
-        // IQueryable<Balance> reslutE = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"Bop\" = '支出' AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+    }
 
-        // IQueryable<Balance> reslutI = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"Bop\" = '収入' AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+    private Years years = new Years();
+    public string? SelectedYear { get; set; }
+    public string? SelectMonth { get; set; }
+    public string? Year { get; set; }
+    public string? Month { get; set; }
 
-        // IQueryable<Balance> reslut1 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 1 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+    // 更新
+    private void OnAdd()
+    {
+        Year = SelectedYear;
+        Month = SelectMonth;
 
-        // IQueryable<Balance> reslut2 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 2 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+        Food1 = 0;
+        Hobby2 = 0;
+        Carfare3 = 0;
+        Clothes4 = 0;
+        Expenses5 = 0;
+        Education6 = 0;
+        Water7 = 0;
+        Communication8 = 0;
+        Rent9 = 0;
+        Insurance10 = 0;
+        SumExpense = 0;
+        SumIncome = 0;
+        TotalIncome1 = 0;
+        Household1 = 0;
 
-        // IQueryable<Balance> reslut3 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 3 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+        IQueryable<Balance> reslutE = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"Bop\" = '支出' AND \"UserAccountId\" = '{userId}' AND to_char(\"DateTime\",'yyyy年mm月') = '{SelectedYear}年{SelectMonth}月'");
 
-        // IQueryable<Balance> reslut4 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 4 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+        IQueryable<Balance> reslutI = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"Bop\" = '収入' AND \"UserAccountId\" = '{userId}' AND to_char(\"DateTime\",'yyyy年mm月') = '{SelectedYear}年{SelectMonth}月'");
 
-        // IQueryable<Balance> reslut5 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 5 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+        IQueryable<Balance> reslut1 = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 1 AND \"UserAccountId\" = '{userId}'AND to_char(\"DateTime\",'yyyy年mm月') = '{SelectedYear}年{SelectMonth}月'");
 
-        // IQueryable<Balance> reslut6 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 6 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
-       
-        // IQueryable<Balance> reslut7 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 7 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+        IQueryable<Balance> reslut2 = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 2 AND \"UserAccountId\" = '{userId}'AND to_char(\"DateTime\",'yyyy年mm月') = '{SelectedYear}年{SelectMonth}月'");
 
-        // IQueryable<Balance> reslut8 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 8 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+        IQueryable<Balance> reslut3 = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 3 AND \"UserAccountId\" = '{userId}'AND to_char(\"DateTime\",'yyyy年mm月') = '{SelectedYear}年{SelectMonth}月'");
 
-        // IQueryable<Balance> reslut9 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 9 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+        IQueryable<Balance> reslut4 = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 4 AND \"UserAccountId\" = '{userId}'AND to_char(\"DateTime\",'yyyy年mm月') = '{SelectedYear}年{SelectMonth}月'");
 
-        // IQueryable<Balance> reslut10 = _context.Balance.FromSqlRaw("SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 10 AND \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+        IQueryable<Balance> reslut5 = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 5 AND \"UserAccountId\" = '{userId}'AND to_char(\"DateTime\",'yyyy年mm月') = '{SelectedYear}年{SelectMonth}月'");
 
-        // IQueryable<UserAccount> reslut11 = _context.UserAccount.FromSqlRaw("SELECT * FROM \"UserAccount\" WHERE  \"UserAccountId\" = 'b0204f93-cec6-4079-bab6-c30b6c2c9067'");
+        IQueryable<Balance> reslut6 = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 6 AND \"UserAccountId\" = '{userId}'AND to_char(\"DateTime\",'yyyy年mm月') = '{SelectedYear}年{SelectMonth}月'");
 
-        // Food = reslut1.ToList();
-        // Hobby = reslut2.ToList();
-        // Carfare = reslut3.ToList();
-        // Clothes = reslut4.ToList();
-        // Expenses = reslut5.ToList();
-        // Education = reslut6.ToList();
-        // Water = reslut7.ToList();
-        // Communication = reslut8.ToList();
-        // Rent = reslut9.ToList();
-        // Insurance = reslut10.ToList();
-        // TotalIncome = reslut11.ToList();
+        IQueryable<Balance> reslut7 = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 7 AND \"UserAccountId\" = '{userId}'AND to_char(\"DateTime\",'yyyy年mm月') = '{SelectedYear}年{SelectMonth}月'");
+
+        IQueryable<Balance> reslut8 = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 8 AND \"UserAccountId\" = '{userId}'AND to_char(\"DateTime\",'yyyy年mm月') = '{SelectedYear}年{SelectMonth}月'");
+
+        IQueryable<Balance> reslut9 = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 9 AND \"UserAccountId\" = '{userId}'AND to_char(\"DateTime\",'yyyy年mm月') = '{SelectedYear}年{SelectMonth}月'");
+
+        IQueryable<Balance> reslut10 = _context.Balance.FromSqlRaw($"SELECT * FROM \"Balance\" WHERE \"CategoryId\" = 10 AND \"UserAccountId\" = '{userId}'AND to_char(\"DateTime\",'yyyy年mm月') = '{SelectedYear}年{SelectMonth}月'");
+
+        IQueryable<UserAccount> reslut11 = _context.UserAccount.FromSqlRaw($"SELECT * FROM \"UserAccount\" WHERE  \"UserAccountId\" = '{userId}'");
+
+        Food = reslut1.ToList();
+        Hobby = reslut2.ToList();
+        Carfare = reslut3.ToList();
+        Clothes = reslut4.ToList();
+        Expenses = reslut5.ToList();
+        Education = reslut6.ToList();
+        Water = reslut7.ToList();
+        Communication = reslut8.ToList();
+        Rent = reslut9.ToList();
+        Insurance = reslut10.ToList();
 
 
-        // Expense = reslutE.ToList();
-        // Income = reslutI.ToList();
 
-    // }
+        Expense = reslutE.ToList();
+        Income = reslutI.ToList();
+        UserAccounts = reslut11.ToList();
+
+    }
 
 }
 

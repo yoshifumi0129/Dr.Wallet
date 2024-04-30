@@ -21,12 +21,12 @@ function renderChart(chartJson) {
 };
 
 function renderChartTest(food, hobby, carfare, clothes, expenses, education, water, communication, rent, insurance,
-    idealFood,idealHobby,idealCarfare,idealClothes,idealExpenses,idealEducation,idealWater,idealCommunication,idealRent,idealInsurance) {
+    idealFood, idealHobby, idealCarfare, idealClothes, idealExpenses, idealEducation, idealWater, idealCommunication, idealRent, idealInsurance) {
     renderChart(
         JSON.stringify({
             "type": "radar",
             "data": {
-                "labels": ["食費", "趣味・娯楽", "交通費", "衣服・美容", "特別費","教養・教育費", "水道・光熱費", "通信費", "家賃", "税・保険"],
+                "labels": ["食費", "趣味・娯楽", "交通費", "衣服・美容", "特別費", "教養・教育費", "水道・光熱費", "通信費", "家賃", "税・保険"],
                 "datasets": [
                     {
                         "label": "支出",
@@ -110,7 +110,7 @@ function pieChartTest(food, hobby, carfare, clothes, expenses, education, water,
         JSON.stringify({
             "type": "pie",
             "data": {
-                "labels": ["食費", "趣味・娯楽", "交通費", "衣服・美容", "特別費", "教養・教育費","水道・光熱費","通信費","家賃","税・保険"],
+                "labels": ["食費", "趣味・娯楽", "交通費", "衣服・美容", "特別費", "教養・教育費", "水道・光熱費", "通信費", "家賃", "税・保険"],
                 "datasets": [
                     {
                         "label": "支出",
@@ -121,10 +121,10 @@ function pieChartTest(food, hobby, carfare, clothes, expenses, education, water,
                             "rgba(255, 206, 86, 0.2)",
                             "rgba(75, 192, 192, 0.2)",
                             "rgba(153, 102, 255, 0.2)",
-                            "rgba(153, 102, 255, 0.2)",
-                            "rgba(153, 102, 255, 0.2)",
-                            "rgba(153, 102, 255, 0.2)",
-                            "rgba(153, 102, 255, 0.2)",
+                            "rgba(255, 0, 0, 0.2)",
+                            "rgba(120, 0, 107, 0.2)",
+                            "rgba(140, 102, 255, 0.4)",
+                            "rgba(0, 255, 226, 0.35)",
                             "rgba(255, 159, 64, 0.2)"
                         ],
                         "borderColor": [
@@ -133,10 +133,10 @@ function pieChartTest(food, hobby, carfare, clothes, expenses, education, water,
                             "rgba(255, 206, 86, 1)",
                             "rgba(75, 192, 192, 1)",
                             "rgba(153, 102, 255, 1)",
-                            "rgba(153, 102, 255, 1)",
-                            "rgba(153, 102, 255, 1)",
-                            "rgba(153, 102, 255, 1)",
-                            "rgba(153, 102, 255, 1)",
+                            "rgba(255, 0, 0, 1)",
+                            "rgba(47, 0, 41, 1",
+                            "rgba(120, 0, 107, 1)",
+                            "rgba(0, 135, 119, 1)",
                             "rgba(255, 159, 64, 1)"
                         ],
                         "borderWidth": 1
@@ -144,8 +144,12 @@ function pieChartTest(food, hobby, carfare, clothes, expenses, education, water,
 
                 ]
             },
-
             "options": {
+                "plugins": {
+                    legend: {
+                        display: false
+                    }
+                },
                 "scales": {
                     "yAxes": [
                         {
@@ -155,6 +159,8 @@ function pieChartTest(food, hobby, carfare, clothes, expenses, education, water,
                         }
                     ]
                 }
+            }, plugins: [ChartDataLabels],
+            options: {
             }
         })
     );
