@@ -15,7 +15,7 @@
 
 
 <EditForm Model="@years" OnSubmit="OnAdd">
-    <div class="form-group col-md-4">
+    <div class="form-group col-md-3">
         <label class="control-label">西暦</label>
         <select @bind="SelectedYear" class="form-control">
             <option value="">-- 選択してください --</option>
@@ -32,7 +32,7 @@
             <option value="@years.YearsId">2034</option>
         </select>
     </div>
-    <div class="form-group col-md-4">
+    <div class="form-group col-md-3">
         <label class="control-label">月</label>
         <select @bind="SelectMonth" 　class="form-control">
             <option value="">-- 選択してください --</option>

@@ -12,34 +12,37 @@
 @using Microsoft.AspNetCore.Authorization;
 
 
-<div class="text-center">
-    <h1>プロフィール設定</h1>
-    <p>初めての方はご入力ください</p>
+<div >
+    <h1>&emsp;&emsp;&emsp;プロフィール設定</h1>
+    <p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;初めての方はご入力ください</p>
     <EditForm Model="@user" OnSubmit="OnAdd">
-        <div class="text-danger">@errorMessage</div>
-        <div class="form-group ">
+        <div class="text-danger ">@errorMessage</div>
+        <div class="form-group col-md-6  text-center">
             <label asp-for="User.Name" class="control-label">名前</label>
-            <input asp-for="User.Name" class="form-control" @bind-value="@user.Name" />
+            <input asp-for="User.Name" class="form-control text-center" @bind-value="@user.Name" />
         </div>
-        <div class="form-group ">
+       <div class="form-group col-md-6  text-center">
             <label asp-for="User.Household" class="control-label">家族構成</label>
-            <select @bind="SelectedHousehold" class="form-control">
+            <select @bind="SelectedHousehold" class="form-control text-center">
                 <option value="">-- 選択してください --</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
             </select>
         </div>
-        <div class="form-group">
+        <div class="form-group col-md-6  text-center">
             <label asp-for="User.YearlyIncome" class="control-label">年収</label>
-            <input asp-for="User.YearlyIncome" class="form-control" @bind-value="@user.YearlyIcome" />
+            <input asp-for="User.YearlyIncome" class="form-control text-center" @bind-value="@user.YearlyIcome" />
+            <h3>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;万円</h3>
         </div>
         <div class="form-group">
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
             <button class="btn btn-primary">登録</button>
         </div>
     </EditForm>
 </div>
-
+<style>
+</style>
 
 @* <h1>Hello, world!</h1>
 <h5>ログインユーザID: @userId</h5>
