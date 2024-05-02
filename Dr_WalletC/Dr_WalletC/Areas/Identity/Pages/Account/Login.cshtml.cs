@@ -103,7 +103,7 @@ namespace Dr_WalletC.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/entry");
+            returnUrl ??= Url.Content("~/tallys");
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
